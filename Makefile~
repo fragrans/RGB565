@@ -1,0 +1,2 @@
+all: rgb565.cpp
+	g++ -o rgb565 rgb565.cpp

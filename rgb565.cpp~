@@ -1,0 +1,38 @@
+
+
+typedef unsigned char BYTE
+
+void ColorConversion24To16 ( BYTE *lpBits24, int Width, int Height, BYTE *lpBits16   )
+{
+  int nPos16 = 0;
+  int Size = Width*Height*3;
+  for ( int nPos24 = 0 ; nPos24 < Size ; nPos24+=3 ,nPos16+=2)
+  {
+    BYTE Red24   = lpBits24[nPos24+0]; // 8-bit red
+    BYTE Green24 = lpBits24[nPos24+1]; // 8-bit green
+    BYTE Blue24  = lpBits24[nPos24+2]; // 8-bit blue
+
+    BYTE Red16   = Red24   >> 3;  // 5-bit red
+    BYTE Green16 = Green24 >> 2;  // 6-bit green
+    BYTE Blue16  = Blue24  >> 3;  // 5-bit blue
+
+    unsigned short RGB2Bytes = Blue16 + (Green16<<5) + (Red16<<(5+6));
+
+    lpBits16[nPos16]  = LOBYTE(RGB2Bytes);
+    lpBits16[nPos16+1]= HIBYTE(RGB2Bytes);
+  }
+}
+
+  // usage
+  int Width  = 100;
+  int Height = 100;
+
+  BYTE *lpBits24 = new BYTE[Width*Height*3];
+  BYTE *lpBits16 = new BYTE[Width*Height*2];
+
+
+  ColorConversion24To16( lpBits24,Width,Height,lpBits16);
+
+
+  delete [] lpBits24;
+  delete [] lpBits16;
