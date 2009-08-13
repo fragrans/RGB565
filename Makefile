@@ -1,3 +1,5 @@
-all: rgb565.cpp mark.cpp
-	g++ -g -Wall -o  rgb565 rgb565.cpp
-	g++ -g -Wall -o mark mark.cpp
+all: mark.h watermark.cpp
+	g++ -Wall -g watermark.cpp -o watermark
+
+rgb565: rgb565.cpp	
+	g++ -Wall -g rgb565.cpp -o rgb565
