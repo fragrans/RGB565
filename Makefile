@@ -1,4 +1,5 @@
-all: mark.h watermark.cpp
+.PHONY : all rgb565
+all: mark.h watermark.cpp rgb565
 	g++ -Wall -g watermark.cpp -o watermark
 
 rgb565: rgb565.cpp	

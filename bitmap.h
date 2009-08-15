@@ -100,8 +100,9 @@ private:
 	BITMAP_HEADER m_BitmapHeader;
 	RGBA *m_BitmapData;
 	unsigned int m_BitmapSize;
+  	unsigned int m_ColorTableSize;
 	BGRA *m_ColorTable;
-	unsigned int m_ColorTableSize;
+
 
 private:
 
@@ -154,7 +155,7 @@ public:
 		Dispose();
 	}
 	
-	CBitmap(char* Filename) : m_BitmapData(0), m_BitmapSize(0), m_ColorTableSize(0), m_ColorTable(0) {
+	CBitmap(const char* Filename) : m_BitmapData(0), m_BitmapSize(0), m_ColorTableSize(0), m_ColorTable(0) {
 		Load(Filename);
 	}
 	
@@ -174,7 +175,8 @@ public:
 	
 	/* Load specified Bitmap and stores it as RGBA in an internal buffer */
 	
-	bool Load(char *Filename) {
+	bool Load(const
+              char *Filename) {
 		FILE *file = fopen(Filename, "rb");
 
 		Dispose();
@@ -217,12 +219,12 @@ public:
 		int Index = 0;
 		
 		if (m_BitmapHeader.Compression == 0) {
-			for (int i = 0; i < GetHeight(); i++) {
+			for (unsigned int i = 0; i < GetHeight(); i++) {
 				fread(Line, LineWidth, 1, file);
 				
 				unsigned char *LinePtr = Line;
 				
-				for (int j = 0; j < GetWidth(); j++) {
+				for (unsigned int j = 0; j < GetWidth(); j++) {
 					if (m_BitmapHeader.BitCount == 1) {
 						unsigned int Color = *((unsigned char*) LinePtr);
 						for (int k = 0; k < 8; k++) {
@@ -337,12 +339,12 @@ public:
 			
 			/* We assumes that mask of each color component can be in any order */
 
-			for (int i = 0; i < GetHeight(); i++) {
+			for (unsigned int i = 0; i < GetHeight(); i++) {
 				fread(Line, LineWidth, 1, file);
 				
 				unsigned char *LinePtr = Line;
 				
-				for (int j = 0; j < GetWidth(); j++) {
+				for (unsigned int j = 0; j < GetWidth(); j++) {
 					
 					unsigned int Color = 0;
 
@@ -484,7 +486,7 @@ public:
 		
 		unsigned char* BufferPtr = (unsigned char*) Buffer;
 
-		for (int i = 0; i < m_BitmapSize; i++) {
+		for (unsigned int i = 0; i < m_BitmapSize; i++) {
 			if (BitCount == 16) {
 				((BGR16*) BufferPtr)->Blue = ShiftRightByMask(m_BitmapData[i].Blue, 0xff, 5);
 				((BGR16*) BufferPtr)->Green = ShiftRightByMask(m_BitmapData[i].Green, 0xff, 5);
@@ -557,7 +559,7 @@ public:
 		
 		unsigned char* BufferPtr = (unsigned char*) Buffer;
 		
-		for (int i = 0; i < m_BitmapSize; i++) {
+		for (unsigned int i = 0; i < m_BitmapSize; i++) {
 			if (BitCount == 4) {
 				*BufferPtr = (m_BitmapData[i].Red >> 6) | (m_BitmapData[i].Green >> 7) << 2 | (m_BitmapData[i].Blue >> 7) << 3;
 				i++;
@@ -602,7 +604,7 @@ public:
 			BitCount--;
 		}
 
-		for (int i = 0; i < m_BitmapSize; i++) {
+		for (unsigned int i = 0; i < m_BitmapSize; i++) {
 			unsigned int Color = 0;
 			if (BitCount <= 8) {
 				Color = *((unsigned char*) BufferPtr);
@@ -628,7 +630,7 @@ public:
 	}
 
 	void SetAlphaBits(unsigned char Alpha) {
-		for (int i = 0; i < m_BitmapSize; i++) {
+		for (unsigned int i = 0; i < m_BitmapSize; i++) {
 			m_BitmapData[i].Alpha = Alpha;
 		}
 	}

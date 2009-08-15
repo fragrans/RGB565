@@ -52,11 +52,12 @@ void GenArrayFromRGB16(ostream& os, BYTE *lpBits16, int Width, int Height)
 
 int main()
 {
-    CBitmap bmp("pic.bmp");
+    const char *fn = "pic.bmp";
+    CBitmap bmp(fn);
     
     // usage
-    int Width  = bmp.GetWidth();
-    int Height = bmp.GetHeight();
+    unsigned int Width  = bmp.GetWidth();
+    unsigned int Height = bmp.GetHeight();
   
     cout << "Width: " << Width << "\n";    
     cout << "Height: " << Height << "\n";
